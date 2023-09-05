@@ -1,0 +1,190 @@
+﻿Clase de creación de tablas con la llave primaria y con clave foránea para unirlas con joins
+
+
+CREATE TABLE pets (
+    id INT PRIMARY KEY,
+    nombre VARCHAR(20),
+    especie VARCHAR(10),
+    sexo CHAR(1),
+    fecha DATE,
+    precio DECIMAL(10, 2)
+);
+
+
+INSERT INTO pets VALUES(1, 'Fluffy', 'Dog', 'F', '2023-08-01', 500.00),(2, 'Whiskers', 'Cat', 'M', '2023-07-15', 300.50),(3, 'Buddy', 'Dog', 'M', '2023-06-20', 700.75);
+
+
+
+
+CREATE TABLE historia_clinica (
+    hid INT PRIMARY KEY,
+    tratamiento VARCHAR(100),
+    fecha DATE,
+    costo DECIMAL(10, 3),
+    pet_id INT,
+    FOREIGN KEY (pet_id) REFERENCES pets(id)
+);
+INSERT INTO historia_clinica VALUES(1, 'vacunación', '2023-8-27', 120000, 1);
+INSERT INTO historia_clinica VALUES(2, 'inyección sistema de planificación', '2023-8-28', 250000, 1);
+INSERT INTO historia_clinica VALUES(3, 'desparasitación', '2023-8-29', 57000, 1);
+
+
+SHOW CREATE TABLE pets;
+SHOW CREATE TABLE historia_clinica;
+
+
+SELECT pets.nombre, historia_clinica.hid FROM pets JOIN historia_clinica ON pets.id = historia_clinica.pet_id;
+
+
+SELECT pets.nombre, historia_clinica.hid FROM pets LEFT JOIN historia_clinica ON pets.id = historia_clinica.pet_id;
+
+
+SELECT pets.nombre, historia_clinica.hid FROM pets RIGHT JOIN historia_clinica ON pets.id = historia_clinica.pet_id;
+
+
+SELECT pets.nombre, historia_clinica.hid FROM pets LEFT JOIN historia_clinica ON pets.id = historia_clinica.pet_id UNION SELECT pets.nombre, historia_clinica.hid FROM pets RIGHT JOIN historia_clinica ON pets.id = historia_clinica.pet_id;
+
+
+SELECT pet_id, SUM(costo) FROM historia_clinica GROUP BY pet_id;
+
+
+SELECT pet_id, ROUND(AVG(costo),0) "promedio costo tratamiento" FROM historia_clinica GROUP BY pet_id;
+
+
+SELECT COUNT(*) FROM historia_clinica;
+
+
+SELECT nombre, SUM(precio) FROM pets GROUP BY id;SELECT nombre,precio FROM pets WHERE precio=(SELECT MAX(precio) FROM pets);
+
+
+SELECT nombre,precio FROM pets WHERE precio=(SELECT MAX(precio) FROM pets);
+
+
+SELECT nombre,precio FROM pets WHERE precio=(SELECT MIN(precio) FROM pets);
+
+
+
+
+INSERT INTO pets (id, nombre, especie, sexo, fecha, precio) VALUES
+(4, 'Bella', 'Gato', 'F', '2023-03-05', 95.00),
+(5, 'Charlie', 'Perro', 'M', '2022-08-20', 320.00),
+(6, 'Molly', 'Gato', 'F', '2023-02-14', 140.25),
+(7, 'Buddy', 'Perro', 'M', '2023-04-01', 210.75),
+(8, 'Daisy', 'Gato', 'F', '2022-12-18', 110.50),
+(9, 'Lucy', 'Perro', 'F', '2022-10-05', 280.00),
+(10, 'Leo', 'Gato', 'M', '2023-01-25', 155.75),
+(11, 'Bailey', 'Perro', 'F', '2023-03-12', 200.00),
+(12, 'Chloe', 'Gato', 'F', '2022-11-28', 130.25),
+(13, 'Cooper', 'Perro', 'M', '2022-09-15', 190.50),
+(14, 'Milo', 'Gato', 'M', '2022-08-10', 100.00),
+(15, 'Riley', 'Perro', 'M', '2023-02-05', 240.75),
+(16, 'Zoe', 'Gato', 'F', '2022-10-20', 115.25),
+(17, 'Lucas', 'Perro', 'M', '2023-04-18', 270.00),
+(18, 'Lily', 'Gato', 'F', '2023-01-15', 150.50),
+(19, 'Oscar', 'Perro', 'M', '2022-12-05', 220.25),
+(20, 'Sophie', 'Gato', 'F', '2022-11-01', 125.00),
+(21, 'Bentley', 'Perro', 'M', '2022-09-25', 205.75),
+(22, 'Ruby', 'Gato', 'F', '2023-03-20', 135.25),
+(23, 'Teddy', 'Perro', 'M', '2023-01-10', 260.50),
+(24, 'Lola', 'Gato', 'F', '2022-08-05', 110.00),
+(25, 'Bailey', 'Perro', 'M', '2022-10-30', 290.75),
+(26, 'Oliver', 'Gato', 'M', '2022-12-25', 160.50),
+(27, 'Mia', 'Perro', 'F', '2023-02-20', 230.25),
+(28, 'Leo', 'Gato', 'M', '2023-04-06', 145.00),
+(29, 'Charlie', 'Perro', 'M', '2022-11-10', 175.25),
+(30, 'Luna', 'Gato', 'F', '2023-03-25', 120.75),
+(31, 'Coco', 'Perro', 'F', '2023-01-05', 270.00),
+(32, 'Milo', 'Gato', 'M', '2022-09-20', 140.50),
+(33, 'Zoe', 'Perro', 'F', '2022-08-15', 200.25),
+(34, 'Lucy', 'Gato', 'F', '2022-10-10', 105.00),
+(35, 'Rocky', 'Perro', 'M', '2023-02-10', 240.75),
+(36, 'Chloe', 'Gato', 'F', '2022-11-05', 130.25),
+(37, 'Oscar', 'Perro', 'M', '2023-04-15', 220.50),
+(38, 'Sophie', 'Gato', 'F', '2022-12-20', 125.75),
+(39, 'Lily', 'Perro', 'F', '2022-09-15', 195.00),
+(40, 'Leo', 'Gato', 'M', '2022-08-10', 170.25),
+(41, 'Max', 'Perro', 'M', '2023-03-01', 250.50),
+(42, 'Mia', 'Gato', 'F', '2022-10-25', 110.00),
+(43, 'Lucas', 'Perro', 'M', '2022-11-20', 180.25),
+(44, 'Lola', 'Gato', 'F', '2022-12-15', 135.50),
+(45, 'Buddy', 'Perro', 'M', '2023-01-30', 210.75),
+(46, 'Ruby', 'Gato', 'F', '2022-09-10', 125.25),
+(47, 'Teddy', 'Perro', 'M', '2022-08-05', 260.00),
+(48, 'Bailey', 'Gato', 'F', '2023-04-10', 140.75),
+(49, 'Molly', 'Perro', 'F', '2023-02-15', 190.00),
+(50, 'Oliver', 'Gato', 'M', '2022-10-01', 155.25);
+
+
+
+
+INSERT INTO historia_clinica (hid, tratamiento, fecha, costo, pet_id) VALUES
+(4, 'Cirugía de esterilización', '2023-08-30', 280000.000, 3),
+(5, 'Radiografía', '2023-08-31', 105000.000, 3),
+(6, 'Vacunación', '2023-09-01', 120000.000, 3),
+(7, 'Examen de sangre', '2023-09-02', 85000.000, 5),
+(8, 'Consulta médica', '2023-09-03', 60000.000, 5),
+(9, 'Cirugía de esterilización', '2023-09-04', 280000.000, 5),
+(10, 'Radiografía', '2023-09-05', 105000.000, 6),
+(11, 'Vacunación', '2023-09-06', 120000.000, 6),
+(12, 'Examen de sangre', '2023-09-07', 85000.000, 7),
+(13, 'Consulta médica', '2023-09-08', 60000.000, 8),
+(14, 'Cirugía de esterilización', '2023-09-09', 280000.000, 8),
+(15, 'Radiografía', '2023-09-10', 105000.000, 11),
+(16, 'Vacunación', '2023-09-11', 120000.000, 12),
+(17, 'Examen de sangre', '2023-09-12', 85000.000, 13),
+(18, 'Consulta médica', '2023-09-13', 60000.000, 13),
+(19, 'Cirugía de esterilización', '2023-09-14', 280000.000, 13),
+(20, 'Radiografía', '2023-09-15', 105000.000, 16),
+(21, 'Vacunación', '2023-09-16', 120000.000, 16),
+(22, 'Examen de sangre', '2023-09-17', 85000.000, 16),
+(23, 'Consulta médica', '2023-09-18', 60000.000, 20),
+(24, 'Cirugía de esterilización', '2023-09-19', 280000.000, 20),
+(25, 'Radiografía', '2023-09-20', 105000.000, 21),
+(26, 'Vacunación', '2023-09-21', 120000.000, 21),
+(27, 'Examen de sangre', '2023-09-22', 85000.000, 21),
+(28, 'Consulta médica', '2023-09-23', 60000.000, 22),
+(29, 'Cirugía de esterilización', '2023-09-24', 280000.000, 22),
+(30, 'Radiografía', '2023-09-25', 105000.000, 24),
+(31, 'Vacunación', '2023-09-26', 120000.000, 25),
+(32, 'Examen de sangre', '2023-09-27', 85000.000, 32),
+(33, 'Consulta médica', '2023-09-28', 60000.000, 33),
+(34, 'Cirugía de esterilización', '2023-09-29', 280000.000, 34),
+(35, 'Radiografía', '2023-09-30', 105000.000, 35),
+(36, 'Vacunación', '2023-10-01', 120000.000, 36),
+(37, 'Examen de sangre', '2023-10-02', 85000.000, 37),
+(38, 'Consulta médica', '2023-10-03', 60000.000, 38),
+(39, 'Cirugía de esterilización', '2023-10-04', 280000.000, 39),
+(40, 'Radiografía', '2023-10-05', 105000.000, 40),
+(41, 'Vacunación', '2023-10-06', 120000.000, 41),
+(42, 'Examen de sangre', '2023-10-07', 85000.000, 42),
+(43, 'Consulta médica', '2023-10-08', 60000.000, 43),
+(44, 'Cirugía de esterilización', '2023-10-09', 280000.000, 44),
+(45, 'Radiografía', '2023-10-10', 105000.000, 45),
+(46, 'Vacunación', '2023-10-11', 120000.000, 46),
+(47, 'Examen de sangre', '2023-10-12', 85000.000, 47),
+(48, 'Consulta médica', '2023-10-13', 60000.000, 48),
+(49, 'Cirugía de esterilización', '2023-10-14', 280000.000, 49),
+(50, 'Radiografía', '2023-10-15', 105000.000, 50);
+
+
+
+
+SELECT pets.nombre, historia_clinica.tratamiento FROM pets RIGHT JOIN historia_clinica ON pets.id = historia_clinica.pet_id ORDER BY pets.nombre;
+
+
+
+
+SELECT pets.nombre, historia_clinica.tratamiento FROM pets RIGHT JOIN historia_clinica ON pets.id = historia_clinica.pet_id ORDER BY pets.nombre ASC;
+
+
+SELECT pets.nombre, historia_clinica.tratamiento FROM pets RIGHT JOIN historia_clinica ON pets.id = historia_clinica.pet_id ORDER BY pets.nombre DESC;
+
+
+SELECT SUM(costo) FROM historia_clinica;
+
+
+
+
+
+
+SELECT 1 AS estadistica_id, tratamiento, AVG(costo) AS costo_promedio, SUM(costo) AS suma_costos, COUNT(*) AS registros FROM historia_clinica GROUP BY tratamiento;
